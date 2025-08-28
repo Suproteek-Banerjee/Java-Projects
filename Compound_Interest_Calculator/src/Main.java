@@ -71,7 +71,8 @@ public class Main {
         System.out.println("Compounded: " + n + " times per year");
         System.out.println("------------------------------------");
         System.out.println("At the end of " + time + " years you will " + returns + " $" + amount);
-        System.out.println("Compound Interest: $" + compoundInterest);
+        System.out.println("------------------------------------");
+        System.out.println("COMPOUND INTEREST: $" + compoundInterest);
         System.out.println("------------------------------------");
         System.out.println("THANK YOU FOR USING THE COMPOUND INTEREST CALCULATOR!");
     }
