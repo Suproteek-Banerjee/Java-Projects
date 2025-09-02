@@ -16,7 +16,7 @@
 
 import java.util.Scanner;
 
-public class Main {
+public class gradesCalc {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
@@ -77,10 +77,10 @@ public class Main {
         // Output
         System.out.println();
         System.out.println("------------------------------------");
-        System.out.println("Student's Weighted Average: " + weightedAverage);
+        System.out.printf("Student's Weighted Average: %.2f%n", weightedAverage);
         System.out.println("Student's Final Grade: " + grades);
         System.out.println("------------------------------------");
         System.out.println();
-        System.out.println("THANK YOU FOR USING THE CS 201 Weighted Average CALCULATOR!");
+        System.out.println("THANK YOU FOR USING THE CS 201 Weighted Average C       ALCULATOR!");
     }
 }
