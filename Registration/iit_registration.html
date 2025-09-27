@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIT Chicago Smart Registration Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #4f46e5;
+  --primary-light: #818cf8;
+  --primary-dark: #3730a3;
+  --secondary: #10b981;
+  --accent: #f59e0b;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --success: #10b981;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--surface-2);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Header with glassmorphism */
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--gradient-1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.notification-btn {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.notification-btn:hover {
+  background: var(--surface-3);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--danger);
+  border-radius: 50%;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Main Dashboard Layout */
+.dashboard {
+  display: grid;
+  grid-template-columns: 350px 1fr 300px;
+  gap: 1.5rem;
+  padding: 2rem;
+  height: calc(100vh - 80px);
+}
+
+/* Left Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: between;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* AI Search Bar */
+.ai-search {
+  position: relative;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  font-size: 1rem;
+  background: var(--surface);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.search-btn {
+  position: absolute;
+  right: 8px;
+  background: var(--gradient-1);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-btn:hover {
+  transform: scale(1.05);
+}
+
+.ai-suggestions {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.suggestion-chip {
+  background: rgba(79, 70, 229, 0.1);
+  color: var(--primary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.suggestion-chip:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Course Results */
+.course-results {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  background: var(--surface-2);
+  border: 2px solid transparent;
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.course-item:hover {
+  border-color: var(--primary-light);
+  transform: translateX(4px);
+}
+
+.course-item.dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}
+
+.course-info h4 {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.course-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.course-meta span {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.prereq-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+}
+
+.prereq-met {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.prereq-missing {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.waitlist-info {
+  font-size: 0.75rem;
+  color: var(--warning);
+  background: rgba(245, 158, 11, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+}
+
+.add-btn {
+  background: var(--gradient-3);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow);
+}
+
+/* Schedule Calendar */
+.schedule-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.schedule-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.view-toggle {
+  display: flex;
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 0.25rem;
+}
+
+.view-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(6, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  min-height: 500px;
+}
+
+.time-slot {
+  background: var(--surface);
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-header {
+  background: var(--surface-2);
+  padding: 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text);
+}
+
+.calendar-cell {
+  background: var(--surface);
+  min-height: 60px;
+  position: relative;
+}
+
+.drop-zone {
+  position: absolute;
+  inset: 0;
+  border: 2px dashed transparent;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.drop-zone.active {
+  border-color: var(--primary);
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.course-block {
+  position: absolute;
+  background: var(--gradient-1);
+  color: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: move;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  z-index: 10;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.course-block:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+.course-block.conflict {
+  background: var(--gradient-2);
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.course-block-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.course-block-time {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+/* Right Sidebar */
+.right-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Degree Progress */
+.progress-section {
+  background: var(--gradient-1);
+  color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.progress-ring {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  margin: 1rem auto;
+}
+
+.progress-ring circle {
+  fill: none;
+  stroke-width: 8;
+}
+
+.progress-ring .background {
+  stroke: rgba(255, 255, 255, 0.3);
+}
+
+.progress-ring .progress {
+  stroke: white;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2;
+  stroke-dashoffset: 125.6;
+  animation: progressAnimation 2s ease-in-out;
+}
+
+@keyframes progressAnimation {
+  from { stroke-dashoffset: 251.2; }
+  to { stroke-dashoffset: 125.6; }
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.875rem;
+  opacity: 0.9;
+  position: relative;
+  z-index: 2;
+}
+
+/* Schedule Actions */
+.schedule-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-btn {
+  background: var(--gradient-1);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.action-btn:hover::before {
+  left: 100%;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.action-btn.secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.action-btn.secondary:hover {
+  background: var(--surface-2);
+  border-color: var(--primary);
+}
+
+/* Notifications */
+.notification-panel {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--surface-2);
+  transition: all 0.2s ease;
+}
+
+.notification-item:hover {
+  background: var(--surface-3);
+}
+
+.notification-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+.notification-icon.success { background: var(--success); }
+.notification-icon.warning { background: var(--warning); }
+.notification-icon.info { background: var(--primary); }
+
+.notification-content {
+  font-size: 0.875rem;
+}
+
+.notification-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.notification-text {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  
+  .sidebar,
+  .right-sidebar {
+    grid-column: 1;
+  }
+  
+  .schedule-container {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .dashboard {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .calendar-grid {
+    grid-template-columns: 50px repeat(3, 1fr);
+    font-size: 0.8rem;
+  }
+  
+  .day-header {
+    padding: 0.5rem;
+  }
+}
+
+/* Loading States */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Toast Notifications */
+.toast {
+  position: fixed;
+  top: 100px;
+  right: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.success { border-left: 4px solid var(--success); }
+.toast.error { border-left: 4px solid var(--danger); }
+.toast.warning { border-left: 4px solid var(--warning); }
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus states */
+*:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button:focus,
+input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">IIT</div>
+    <div class="logo-text">Smart Registration</div>
+  </div>
+  
+  <nav class="nav-links">
+    <a href="#" class="nav-link active">Dashboard</a>
+    <a href="#" class="nav-link">Courses</a>
+    <a href="#" class="nav-link">Degree Progress</a>
+    <a href="#" class="nav-link">Calendar Sync</a>
+  </nav>
+  
+  <div class="user-menu">
+    <button class="notification-btn" aria-label="Notifications">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a7 7 0 0 1 7 7v4.29l1.71 1.7a1 1 0 0 1-.71 1.71H4a1 1 0 0 1-.71-1.71L5 13.29V9a7 7 0 0 1 7-7zm-1 18h2a1 1 0 1 1-2 0z"/>
+      </svg>
+      <div class="notification-badge"></div>
+    </button>
+    <div class="user-avatar">JS</div>
+  </div>
+</header>
+
+<div class="dashboard">
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <!-- AI-Powered Search -->
+    <div class="card ai-search">
+      <div class="card-header">
+        <h3 class="card-title">🤖 AI Course Assistant</h3>
+      </div>
+      
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-input" 
+          id="aiSearch" 
+          placeholder="Try: 'CS courses with Professor Smith on Tuesdays'"
+          aria-label="AI course search"
+        >
+        <button class="search-btn" onclick="performAISearch()" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M21 21l-4.35-4.35M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" stroke="white" stroke-width="2" fill="none"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="ai-suggestions">
+        <span class="suggestion-chip" onclick="quickSearch('Professor Smith')">Professor Smith</span>
+        <span class="suggestion-chip" onclick="quickSearch('CS electives')">CS Electives</span>
+        <span class="suggestion-chip" onclick="quickSearch('Tuesday Thursday')">Tue/Thu Classes</span>
+        <span class="suggestion-chip" onclick="quickSearch('prerequisites met')">Ready to Take</span>
+      </div>
+      
+      <div class="course-results" id="courseResults">
+        <div class="loading" id="searchLoading" style="display: none;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Schedule Area -->
+  <div class="card schedule-container">
+    <div class="schedule-header">
+      <h3 class="card-title">📅 Smart Schedule Builder</h3>
+      <div class="view-toggle">
+        <button class="view-btn active">Week</button>
+        <button class="view-btn">Month</button>
+        <button class="view-btn">List</button>
+      </div>
+    </div>
+    
+    <div class="calendar-grid" id="scheduleGrid">
+      <div class="time-slot"></div>
+      <div class="day-header">Monday</div>
+      <div class="day-header">Tuesday</div>
+      <div class="day-header">Wednesday</div>
+      <div class="day-header">Thursday</div>
+      <div class="day-header">Friday</div>
+      <div class="day-header">Saturday</div>
+      
+      <!-- Time slots 8 AM to 6 PM -->
+      <!-- This will be generated by JavaScript -->
+    </div>
+    
+    <div class="schedule-actions">
+      <button class="action-btn" onclick="confirmSchedule()">
+        ✅ Confirm & Register Schedule
+      </button>
+      <button class="action-btn secondary" onclick="saveAsDraft()">
+        💾 Save as Draft
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Sidebar -->
+  <div class="right-sidebar">
+    <!-- Degree Progress -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <h3>🎓 Degree Progress</h3>
+      </div>
+      
+      <div class="progress-ring">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle class="background" cx="40" cy="40" r="36"></circle>
+          <circle class="progress" cx="40" cy="40" r="36"></circle>
+        </svg>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; font-size: 1.25rem;">
+          68%
+        </div>
+      </div>
+      
+      <div class="progress-text">
+        <div style="font-weight: 600; margin-bottom: 0.5rem;">Computer Science B.S.</div>
+        <div>92 / 135 credits completed</div>
+        <div style="margin-top: 0.5rem;">🔥 On track to graduate Spring 2026</div>
+      </div>
+    </div>
+
+    <!-- Smart Notifications -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">🔔 Smart Alerts</h3>
+      </div>
+      
+      <div class="notification-panel">
+        <div class="notification-item">
+          <div class="notification-icon success"></div>
+          <div class="notification-content">
+            <div class="notification-title">CS 331 Waitlist Update</div>
+            <div class="notification-text">You moved up to #3! 80% chance of getting in.</div>
+          </div>
+        </div>
+        
+        <div class="notification-item">
+          <div class="notification-icon warning"></div>
+          <div class="notification-content">
+            <div class="notification-title">Schedule Conflict</div>
+            <div class="notification-text">MATH 475 overlaps with HUM 200 by 15 minutes.</div>
+          </div>
+        </div>
+        
+        <div class="notification-item">
+          <div class="notification-icon info"></div>
+          <div class="notification-content">
+            <div class="notification-title">Recommendation</div>
+            <div class="notification-text">Taking CS 201 now unlocks 3 advanced courses next semester.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">⚡ Quick Actions</h3>
+      </div>
+      
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <button class="action-btn secondary" onclick="syncCalendar()">
+          📱 Sync with Google Calendar
+        </button>
+        <button class="action-btn secondary" onclick="exportSchedule()">
+          📄 Export PDF Schedule
+        </button>
+        <button class="action-btn secondary" onclick="shareSchedule()">
+          🔗 Share with Advisor
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Sample course data with enhanced information
+const courses = [
+  {
+    id: 1,
+    name: 'CS 201',
+    title: 'Introduction to Programming',
+    professor: 'Dr. Sarah Smith',
+    day: 'Monday',
+    startTime: 9,
+    endTime: 11,
+    credits: 4,
+    prereqMet: true,
+    seats: { total: 30, taken: 28, waitlist: 5 },
+    rating: 4.2,
+    difficulty: 'Medium',
+    location: 'Stuart Building 223'
+  },
+  {
+    id: 2,
+    name: 'MATH 475',
+    title: 'Discrete Mathematics',
+    professor: 'Prof. Michael Lee',
+    day: 'Tuesday',
+    startTime: 14,
+    endTime: 16,
+    credits: 3,
+    prereqMet: false,
+    seats: { total: 25, taken: 20, waitlist: 0 },
+    rating: 3.8,
+    difficulty: 'Hard',
+    location: 'Engineering 1 Building 106'
+  },
+  {
+    id: 3,
+    name: 'HUM 200',
+    title: 'Ethics and Leadership',
+    professor: 'Dr. Emily Johnson',
+    day: 'Wednesday',
+    startTime: 10,
+    endTime: 12,
+    credits: 3,
+    prereqMet: true,
+    seats: { total: 40, taken: 35, waitlist: 8 },
+    rating: 4.5,
+    difficulty: 'Easy',
+    location: 'Life Sciences Building 150'
+  },
+  {
+    id: 4,
+    name: 'CS 331',
+    title: 'Data Structures and Algorithms',
+    professor: 'Dr. Sarah Smith',
+    day: 'Thursday',
+    startTime: 10,
+    endTime: 12,
+    credits: 4,
+    prereqMet: false,
+    seats: { total: 35, taken: 35, waitlist: 12 },
+    rating: 4.7,
+    difficulty: 'Hard',
+    location: 'Stuart Building 111'
+  },
+  {
+    id: 5,
+    name: 'CS 480',
+    title: 'Database Systems',
+    professor: 'Dr. James Wilson',
+    day: 'Tuesday',
+    startTime: 16,
+    endTime: 18,
+    credits: 3,
+    prereqMet: true,
+    seats: { total: 25, taken: 18, waitlist: 0 },
+    rating: 4.1,
+    difficulty: 'Medium',
+    location: 'Stuart Building 125'
+  },
+  {
+    id: 6,
+    name: 'PHYS 221',
+    title: 'General Physics I',
+    professor: 'Dr. Lisa Chen',
+    day: 'Monday',
+    startTime: 13,
+    endTime: 15,
+    credits: 4,
+    prereqMet: true,
+    seats: { total: 45, taken: 42, waitlist: 3 },
+    rating: 3.9,
+    difficulty: 'Hard',
+    location: 'Engineering 1 Building 240'
+  }
+];
+
+let selectedCourses = [];
+let draggedCourse = null;
+let currentSearchResults = [];
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+  initializeScheduleGrid();
+  displayDefaultCourses();
+  setupEventListeners();
+  initializeTooltips();
+});
+
+function initializeScheduleGrid() {
+  const grid = document.getElementById('scheduleGrid');
+  const hours = Array.from({length: 11}, (_, i) => i + 8); // 8 AM to 6 PM
+  
+  // Clear existing content except headers
+  const headers = grid.querySelectorAll('.day-header, .time-slot');
+  const headerCount = headers.length;
+  
+  hours.forEach(hour => {
+    // Time label
+    const timeSlot = document.createElement('div');
+    timeSlot.className = 'time-slot';
+    timeSlot.textContent = formatTime(hour);
+    grid.appendChild(timeSlot);
+    
+    // Create cells for each day
+    for (let day = 0; day < 6; day++) {
+      const cell = document.createElement('div');
+      cell.className = 'calendar-cell';
+      cell.dataset.day = day;
+      cell.dataset.hour = hour;
+      
+      const dropZone = document.createElement('div');
+      dropZone.className = 'drop-zone';
+      cell.appendChild(dropZone);
+      
+      setupDropZone(cell);
+      grid.appendChild(cell);
+    }
+  });
+}
+
+function formatTime(hour) {
+  if (hour === 0) return '12 AM';
+  if (hour < 12) return `${hour} AM`;
+  if (hour === 12) return '12 PM';
+  return `${hour - 12} PM`;
+}
+
+function displayDefaultCourses() {
+  currentSearchResults = courses.slice(0, 4);
+  renderCourseResults(currentSearchResults);
+}
+
+function renderCourseResults(courseList) {
+  const resultsContainer = document.getElementById('courseResults');
+  const loadingElement = document.getElementById('searchLoading');
+  
+  loadingElement.style.display = 'none';
+  resultsContainer.innerHTML = '';
+  
+  if (courseList.length === 0) {
+    resultsContainer.innerHTML = `
+      <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">🔍</div>
+        <div>No courses found matching your search.</div>
+        <div style="font-size: 0.875rem; margin-top: 0.5rem;">Try adjusting your search terms.</div>
+      </div>
+    `;
+    return;
+  }
+  
+  courseList.forEach(course => {
+    const courseElement = createCourseElement(course);
+    resultsContainer.appendChild(courseElement);
+  });
+}
+
+function createCourseElement(course) {
+  const courseItem = document.createElement('div');
+  courseItem.className = 'course-item';
+  courseItem.draggable = true;
+  courseItem.dataset.courseId = course.id;
+  
+  const waitlistInfo = course.seats.waitlist > 0 
+    ? `<div class="waitlist-info">Waitlist: ${course.seats.waitlist} • ${Math.round((course.seats.total - course.seats.taken) / course.seats.waitlist * 100)}% chance</div>`
+    : '';
+  
+  const seatsInfo = course.seats.taken >= course.seats.total 
+    ? '<span style="color: var(--danger);">Full</span>'
+    : `<span style="color: var(--success);">${course.seats.total - course.seats.taken} seats left</span>`;
+  
+  courseItem.innerHTML = `
+    <div class="course-info">
+      <h4>${course.name} - ${course.title}</h4>
+      <div class="course-meta">
+        <span>👨‍🏫 ${course.professor}</span>
+        <span>📅 ${course.day}s ${formatTime(course.startTime)} - ${formatTime(course.endTime)}</span>
+        <span>📍 ${course.location}</span>
+        <span>⭐ ${course.rating}/5.0 • ${course.difficulty} • ${course.credits} credits</span>
+        <span>${seatsInfo}</span>
+      </div>
+      <div class="prereq-status ${course.prereqMet ? 'prereq-met' : 'prereq-missing'}">
+        ${course.prereqMet ? '✅' : '❌'} Prerequisites ${course.prereqMet ? 'Met' : 'Missing'}
+      </div>
+      ${waitlistInfo}
+    </div>
+    <button class="add-btn" onclick="addCourseToSchedule(${course.id})">
+      ${course.seats.taken >= course.seats.total ? 'Join Waitlist' : 'Add Course'}
+    </button>
+  `;
+  
+  // Drag and drop functionality
+  courseItem.addEventListener('dragstart', (e) => {
+    draggedCourse = course;
+    courseItem.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  
+  courseItem.addEventListener('dragend', () => {
+    courseItem.classList.remove('dragging');
+    draggedCourse = null;
+  });
+  
+  return courseItem;
+}
+
+function setupDropZone(cell) {
+  const dropZone = cell.querySelector('.drop-zone');
+  
+  cell.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    if (draggedCourse) {
+      dropZone.classList.add('active');
+      e.dataTransfer.dropEffect = 'move';
+    }
+  });
+  
+  cell.addEventListener('dragleave', () => {
+    dropZone.classList.remove('active');
+  });
+  
+  cell.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('active');
+    
+    if (draggedCourse) {
+      const day = parseInt(cell.dataset.day);
+      const hour = parseInt(cell.dataset.hour);
+      
+      // Create a modified course with the new time slot
+      const modifiedCourse = {
+        ...draggedCourse,
+        day: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][day],
+        startTime: hour,
+        endTime: hour + (draggedCourse.endTime - draggedCourse.startTime)
+      };
+      
+      addCourseToScheduleAtPosition(modifiedCourse, day, hour);
+    }
+  });
+}
+
+function addCourseToSchedule(courseId) {
+  const course = courses.find(c => c.id === courseId);
+  if (!course) return;
+  
+  // Check if course is already added
+  if (selectedCourses.some(c => c.id === courseId)) {
+    showToast('Course already added to schedule!', 'warning');
+    return;
+  }
+  
+  // Add to selected courses
+  selectedCourses.push(course);
+  
+  // Add visual block to calendar
+  addCourseBlockToCalendar(course);
+  
+  // Check for conflicts
+  checkScheduleConflicts();
+  
+  // Show success message
+  const message = course.seats.taken >= course.seats.total 
+    ? `Joined waitlist for ${course.name}!`
+    : `Added ${course.name} to your schedule!`;
+  showToast(message, 'success');
+  
+  // Update degree progress (simulate)
+  updateDegreeProgress();
+}
+
+function addCourseToScheduleAtPosition(course, dayIndex, startHour) {
+  // Check if course is already added
+  if (selectedCourses.some(c => c.id === course.id)) {
+    showToast('Course already added to schedule!', 'warning');
+    return;
+  }
+  
+  // Add to selected courses with new position
+  const modifiedCourse = { ...course, day: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex], startTime: startHour };
+  selectedCourses.push(modifiedCourse);
+  
+  // Add visual block to calendar
+  addCourseBlockToCalendar(modifiedCourse);
+  
+  // Check for conflicts
+  checkScheduleConflicts();
+  
+  showToast(`Added ${course.name} to ${modifiedCourse.day} at ${formatTime(startHour)}!`, 'success');
+  updateDegreeProgress();
+}
+
+function addCourseBlockToCalendar(course) {
+  const grid = document.getElementById('scheduleGrid');
+  const dayMap = { 'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4, 'Saturday': 5 };
+  const dayIndex = dayMap[course.day];
+  
+  if (dayIndex === undefined) return;
+  
+  const block = document.createElement('div');
+  block.className = 'course-block';
+  block.dataset.courseId = course.id;
+  
+  block.innerHTML = `
+    <div class="course-block-title">${course.name}</div>
+    <div class="course-block-time">${formatTime(course.startTime)} - ${formatTime(course.endTime)}</div>
+    <div style="font-size: 0.7rem; margin-top: 0.25rem;">${course.professor.replace('Dr. ', '').replace('Prof. ', '')}</div>
+  `;
+  
+  // Position the block
+  const cellWidth = 100; // Approximate width percentage per day
+  const cellHeight = 60; // Height per hour
+  const startRow = course.startTime - 8 + 1; // +1 for header row
+  const duration = course.endTime - course.startTime;
+  
+  block.style.gridColumn = `${dayIndex + 2}`;
+  block.style.gridRow = `${startRow + 1} / span ${duration}`;
+  block.style.zIndex = '10';
+  block.style.margin = '2px';
+  
+  // Add remove functionality
+  block.addEventListener('dblclick', () => removeCourseFromSchedule(course.id));
+  
+  // Add click for details
+  block.addEventListener('click', () => showCourseDetails(course));
+  
+  grid.appendChild(block);
+}
+
+function checkScheduleConflicts() {
+  const blocks = document.querySelectorAll('.course-block');
+  blocks.forEach(block => block.classList.remove('conflict'));
+  
+  const conflicts = [];
+  
+  for (let i = 0; i < selectedCourses.length; i++) {
+    for (let j = i + 1; j < selectedCourses.length; j++) {
+      const course1 = selectedCourses[i];
+      const course2 = selectedCourses[j];
+      
+      if (course1.day === course2.day) {
+        const overlap = !(course1.endTime <= course2.startTime || course2.endTime <= course1.startTime);
+        if (overlap) {
+          conflicts.push([course1.id, course2.id]);
+          
+          // Mark blocks as conflicts
+          const block1 = document.querySelector(`[data-course-id="${course1.id}"]`);
+          const block2 = document.querySelector(`[data-course-id="${course2.id}"]`);
+          if (block1) block1.classList.add('conflict');
+          if (block2) block2.classList.add('conflict');
+        }
+      }
+    }
+  }
+  
+  if (conflicts.length > 0) {
+    showToast(`Found ${conflicts.length} schedule conflict${conflicts.length > 1 ? 's' : ''}!`, 'error');
+  }
+}
+
+function removeCourseFromSchedule(courseId) {
+  selectedCourses = selectedCourses.filter(c => c.id !== courseId);
+  
+  const block = document.querySelector(`[data-course-id="${courseId}"]`);
+  if (block) {
+    block.remove();
+  }
+  
+  checkScheduleConflicts();
+  updateDegreeProgress();
+  
+  const course = courses.find(c => c.id === courseId);
+  showToast(`Removed ${course?.name || 'course'} from schedule`, 'info');
+}
+
+function performAISearch() {
+  const query = document.getElementById('aiSearch').value.trim();
+  if (!query) return;
+  
+  showSearchLoading();
+  
+  // Simulate AI processing delay
+  setTimeout(() => {
+    const results = intelligentSearch(query);
+    renderCourseResults(results);
+  }, 800);
+}
+
+function showSearchLoading() {
+  document.getElementById('searchLoading').style.display = 'flex';
+  document.getElementById('courseResults').innerHTML = '';
+}
+
+function intelligentSearch(query) {
+  const lowerQuery = query.toLowerCase();
+  let results = [...courses];
+  
+  // Professor name search
+  if (lowerQuery.includes('professor') || lowerQuery.includes('prof') || lowerQuery.includes('dr.')) {
+    const professorMatch = courses.filter(c => 
+      c.professor.toLowerCase().includes(lowerQuery.replace(/professor|prof|dr\./g, '').trim())
+    );
+    if (professorMatch.length > 0) results = professorMatch;
+  }
+  
+  // Day of week search
+  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const dayMatches = days.filter(day => lowerQuery.includes(day));
+  if (dayMatches.length > 0) {
+    results = results.filter(c => 
+      dayMatches.some(day => c.day.toLowerCase().includes(day))
+    );
+  }
+  
+  // Course code/name search
+  if (lowerQuery.match(/cs|math|hum|phys/)) {
+    const codeMatches = results.filter(c => 
+      c.name.toLowerCase().includes(lowerQuery.match(/cs|math|hum|phys/)[0])
+    );
+    if (codeMatches.length > 0) results = codeMatches;
+  }
+  
+  // Prerequisites filter
+  if (lowerQuery.includes('prerequisite') || lowerQuery.includes('prereq') || lowerQuery.includes('ready')) {
+    results = results.filter(c => c.prereqMet);
+  }
+  
+  // Difficulty filter
+  if (lowerQuery.includes('easy')) {
+    results = results.filter(c => c.difficulty === 'Easy');
+  } else if (lowerQuery.includes('hard')) {
+    results = results.filter(c => c.difficulty === 'Hard');
+  }
+  
+  // Available seats
+  if (lowerQuery.includes('available') || lowerQuery.includes('open')) {
+    results = results.filter(c => c.seats.taken < c.seats.total);
+  }
+  
+  // Default text search if no specific patterns found
+  if (results.length === courses.length && query.length > 2) {
+    results = courses.filter(c => 
+      c.name.toLowerCase().includes(lowerQuery) ||
+      c.title.toLowerCase().includes(lowerQuery) ||
+      c.professor.toLowerCase().includes(lowerQuery) ||
+      c.location.toLowerCase().includes(lowerQuery)
+    );
+  }
+  
+  // Sort by relevance (rating, availability, prerequisites met)
+  results.sort((a, b) => {
+    if (a.prereqMet && !b.prereqMet) return -1;
+    if (!a.prereqMet && b.prereqMet) return 1;
+    return b.rating - a.rating;
+  });
+  
+  return results;
+}
+
+function quickSearch(term) {
+  document.getElementById('aiSearch').value = term;
+  performAISearch();
+}
+
+function setupEventListeners() {
+  // Search input enter key
+  document.getElementById('aiSearch').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      performAISearch();
+    }
+  });
+  
+  // Auto-search on input (debounced)
+  let searchTimeout;
+  document.getElementById('aiSearch').addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      if (e.target.value.length > 2) {
+        performAISearch();
+      } else if (e.target.value.length === 0) {
+        displayDefaultCourses();
+      }
+    }, 300);
+  });
+}
+
+function confirmSchedule() {
+  if (selectedCourses.length === 0) {
+    showToast('Please add courses to your schedule first!', 'warning');
+    return;
+  }
+  
+  const conflicts = document.querySelectorAll('.course-block.conflict');
+  if (conflicts.length > 0) {
+    const proceed = confirm('Your schedule has conflicts. Do you want to register anyway?');
+    if (!proceed) return;
+  }
+  
+  // Simulate registration process
+  showToast('Processing registration...', 'info');
+  
+  setTimeout(() => {
+    const successCount = selectedCourses.filter(c => c.seats.taken < c.seats.total).length;
+    const waitlistCount = selectedCourses.length - successCount;
+    
+    let message = `Successfully registered for ${successCount} course${successCount !== 1 ? 's' : ''}!`;
+    if (waitlistCount > 0) {
+      message += ` Added to ${waitlistCount} waitlist${waitlistCount !== 1 ? 's' : ''}.`;
+    }
+    
+    showToast(message, 'success');
+    
+    // Update course seats (simulate)
+    selectedCourses.forEach(course => {
+      const originalCourse = courses.find(c => c.id === course.id);
+      if (originalCourse && originalCourse.seats.taken < originalCourse.seats.total) {
+        originalCourse.seats.taken++;
+      } else if (originalCourse) {
+        originalCourse.seats.waitlist++;
+      }
+    });
+    
+  }, 2000);
+}
+
+function saveAsDraft() {
+  showToast('Schedule saved as draft!', 'success');
+}
+
+function syncCalendar() {
+  showToast('Calendar sync initiated! Check your Google Calendar.', 'info');
+}
+
+function exportSchedule() {
+  showToast('PDF schedule downloaded!', 'success');
+}
+
+function shareSchedule() {
+  showToast('Schedule shared with your advisor!', 'info');
+}
+
+function updateDegreeProgress() {
+  const totalCredits = selectedCourses.reduce((sum, course) => sum + course.credits, 0);
+  const currentProgress = 68; // Base progress
+  const newProgress = Math.min(100, currentProgress + (totalCredits / 135 * 100));
+  
+  // Update progress ring
+  const progressRing = document.querySelector('.progress-ring .progress');
+  const circumference = 2 * Math.PI * 36;
+  const offset = circumference - (newProgress / 100) * circumference;
+  
+  if (progressRing) {
+    progressRing.style.strokeDashoffset = offset;
+  }
+  
+  // Update text
+  const progressText = document.querySelector('.progress-section .progress-text');
+  if (progressText && totalCredits > 0) {
+    progressText.innerHTML = `
+      <div style="font-weight: 600; margin-bottom: 0.5rem;">Computer Science B.S.</div>
+      <div>${92 + totalCredits} / 135 credits completed</div>
+      <div style="margin-top: 0.5rem;">🔥 ${totalCredits > 0 ? 'Great progress!' : 'On track to graduate Spring 2026'}</div>
+    `;
+  }
+}
+
+function showCourseDetails(course) {
+  const details = `
+Course: ${course.name} - ${course.title}
+Professor: ${course.professor}
+Schedule: ${course.day}s ${formatTime(course.startTime)} - ${formatTime(course.endTime)}
+Location: ${course.location}
+Credits: ${course.credits}
+Rating: ${course.rating}/5.0
+Difficulty: ${course.difficulty}
+Seats: ${course.seats.taken}/${course.seats.total}${course.seats.waitlist > 0 ? ` (${course.seats.waitlist} waitlisted)` : ''}
+Prerequisites: ${course.prereqMet ? 'Met ✅' : 'Not met ❌'}
+  `;
+  
+  alert(details);
+}
+
+function showToast(message, type = 'info') {
+  // Remove existing toasts
+  const existingToasts = document.querySelectorAll('.toast');
+  existingToasts.forEach(toast => toast.remove());
+  
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  
+  document.body.appendChild(toast);
+  
+  // Auto remove after 3 seconds
+  setTimeout(() => {
+    toast.style.animation = 'slideOut 0.3s ease forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// Add slideOut animation
+const style = document.createElement('style');
+style.textContent = `
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+`;
+document.head.appendChild(style);
+
+function initializeTooltips() {
+  // Add hover effects and tooltips for better UX
+  const courseBlocks = document.querySelectorAll('.course-block');
+  courseBlocks.forEach(block => {
+    block.title = 'Double-click to remove, Click for details';
+  });
+}
+
+// Voice search functionality (if supported)
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+  
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('aiSearch').value = transcript;
+    performAISearch();
+    showToast('Voice search: "' + transcript + '"', 'info');
+  };
+  
+  // Add voice search button (optional enhancement)
+  const voiceBtn = document.createElement('button');
+  voiceBtn.innerHTML = '🎤';
+  voiceBtn.style.cssText = `
+    position: absolute;
+    right: 50px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+  `;
+  voiceBtn.onclick = () => recognition.start();
+  document.querySelector('.search-container').appendChild(voiceBtn);
+}
+</script>
+
+</body>
+</html>
