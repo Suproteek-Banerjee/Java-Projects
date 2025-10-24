@@ -1,0 +1,29 @@
+title,author,genre,cost,length,pages,booktype
+"Rolling Stone","J.K. Rowling","Sci-FI",500,"N/A",1200,printedBook
+"Hobbit","R.Tolkien","Drama",700,90,"N/A",audioBook
+"Prejudice","J.Austen","Sci-FI","","",320,11,printedBook
+"Rolling Stone","J.K. Rowling","Sci-FI",500,"",1200,printedBook
+"Hobbit","R.Tolkien","Romance",700,90,"N/A",audioBook
+"Prejudice","J.Austen","Sci-FI","N/A",320,11,printedBook
+"Rolling Stone","J.K. Rowling","Romance",500,"N/A",1200,printedBook
+"Hobbit","R.Tolkien","Anime",700,90,"N/A",audioBook
+"Prejudice","J.Austen","Drama","N/A",320,"N/A",printedBook
+"Foundation","Isaac Asimov","Sci-FI",600,"N/A",900,printedBook
+"1984","George Orwell","Dystopian",400,75,328,audioBook
+"Brave New World","Aldous Huxley","Sci-FI",450,"N/A",311,printedBook
+"To Kill a Mockingbird","Harper Lee","Drama",350,120,281,printedBook
+"The Great Gatsby","F. Scott Fitzgerald","Romance",300,"N/A",180,audioBook
+"Harry Potter and the Sorcerer's Stone","J.K. Rowling","Fantasy",500,85,320,printedBook
+"Lord of the Rings","R.Tolkien","Fantasy",800,150,1200,printedBook
+"Pride and Prejudice","J.Austen","Romance",400,"N/A",432,audioBook
+"The Catcher in the Rye","J.D. Salinger","Drama",350,"N/A",277,printedBook
+"Animal Farm","George Orwell","Political Satire",300,60,112,audioBook
+"Dune","Frank Herbert","Sci-FI",700,"N/A",412,printedBook
+"The Hobbit","R.Tolkien","Adventure",650,90,310,printedBook
+"Moby Dick","Herman Melville","Drama",500,"N/A",635,printedBook
+"The Odyssey","Homer","Epic",600,"N/A",541,audioBook
+"Jane Eyre","Charlotte Bronte","Romance",400,95,500,printedBook
+"Frankenstein","Mary Shelley","Horror",350,"N/A",280,audioBook
+"The Alchemist","Paulo Coelho","Adventure",250,"N/A",208,printedBook
+"Percy Jackson","Rick Riordan","Fantasy",450,80,375,printedBook
+"The Chronicles of Narnia","C.S. Lewis","Fantasy",500,"N/A",768,audioBook
